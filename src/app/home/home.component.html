@@ -1,0 +1,140 @@
+<div class="container">
+    <h1>CRUD DE USUARIOS</h1>
+  
+    <link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-9ndCyUa6m6DkQ1eB2h7K5LJbLr49leU8AS7txPpRL9uClogKAqP8AM5+JXoI5iTw"
+  crossorigin="anonymous" />
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+  rel="stylesheet" />
+
+    <form (submit)="crearData(); $event.preventDefault()">
+      <div class="form-group">
+        <label for="nuevoNombre">Nombre:</label> &nbsp;
+        <input
+          type="text"
+          id="nuevoNombre"
+          [(ngModel)]="newData.nombre"
+          name="nombre"
+          required
+          class="form-control"
+        />
+      </div>
+  
+      <div class="form-group"><br>
+        <label for="nuevaEdad">Edad:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input
+          type="number"
+          id="nuevaEdad"
+          [(ngModel)]="newData.edad"
+          name="edad"
+          required
+          class="form-control"
+        />
+      </div>
+  
+      <div class="form-group"><br>
+        <label for="nuevoEmail">Email:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input
+          type="email"
+          id="nuevoEmail"
+          [(ngModel)]="newData.email"
+          name="email"
+          required
+          class="form-control"
+        />
+      </div><br>
+  <button
+          type="submit" class="text-center"
+          class="btn btn-success btn-lg mt-4 w-100 rounded-pill">
+          <i class="bi bi-person-plus-fill"></i> Crear Usuario
+        </button>
+    </form>
+  
+    <hr />
+  
+
+    <div *ngIf="data.length > 0; else sinDatos">
+      <table class="table table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data">
+            <td>{{ item.id }}</td>
+  
+           
+            <ng-container *ngIf="editData?.id !== item.id; else editMode">
+              <td>{{ item.nombre }}</td>
+              <td>{{ item.edad }}</td>
+              <td>{{ item.email }}</td>
+              
+            </ng-container>
+  
+            <ng-template #editMode>
+              <td>
+                <input
+                  type="text"
+                  [(ngModel)]="editData.nombre"
+                  class="form-control"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  [(ngModel)]="editData.edad"
+                  class="form-control"
+                />
+              </td>&nbsp;&nbsp;
+              <td>
+                <input
+                  type="email"
+                  [(ngModel)]="editData.email"
+                  class="form-control"
+                />
+              </td>
+            </ng-template>
+  
+           
+            <td>
+              <button
+                *ngIf="editData?.id !== item.id"
+                class="btn btn-primary btn-sm"
+                (click)="editarData(item)">
+                <i class="bi bi-pencil-fill"></i> 
+              
+                Editar
+              </button>&nbsp;
+              <button
+                *ngIf="editData?.id === item.id"
+                class="btn btn-success btn-sm"
+                (click)="actualizarData()"
+              ><i class="bi bi-save-fill"></i>
+                Guardar
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="eliminarData(item.id)"
+              ><i class="bi bi-trash-fill"></i>
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    
+    <ng-template #sinDatos>
+      <p>No hay usuarios registrados.</p>
+    </ng-template>
+  </div>
+  
